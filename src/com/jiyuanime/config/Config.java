@@ -45,6 +45,8 @@ public class Config implements PersistentStateComponent<Config.State> {
 
     public void defaultInitState() {
 
+        state.PARTICLE_SHAPE = "RoughRoundShape";
+
         state.PARTICLE_MAX_SIZE = 8;
 
         state.IS_ENABLE = true;
@@ -75,6 +77,14 @@ public class Config implements PersistentStateComponent<Config.State> {
          * @date 2018/3/29
          */
         public int PARTICLE_MAX_SIZE = 8;
+
+        /**
+         * 粒子形状
+         *
+         * @author vencc
+         * @date 2018/3/30
+         */
+        public String PARTICLE_SHAPE = "RoughRoundShape";
 
         /**
          * 是否开启

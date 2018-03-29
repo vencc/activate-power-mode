@@ -3,16 +3,13 @@ package com.jiyuanime.particle;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.jiyuanime.config.Config;
+import com.jiyuanime.shape.RoughRoundShape;
+import com.jiyuanime.shape.RoundShape;
+import com.jiyuanime.shape.StarShape;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JComponent;
@@ -61,17 +58,24 @@ public class ParticlePanel implements Runnable, Border {
     public void run() {
         while (isEnable) {
             if (mParticleAreaGraphics != null) {
-
                 mParticleAreaGraphics.setBackground(new Color(0x00FFFFFF, true));
                 mParticleAreaGraphics.clearRect(0, 0, mParticleAreaWidth * 2, mParticleAreaHeight * 2);
 
                 for (String key : mParticleViews.keySet()) {
                     ParticleView particleView = mParticleViews.get(key);
                     if (particleView != null && particleView.isEnable()) {
-                        mParticleAreaGraphics.setColor(particleView.mColor);
-                        mParticleAreaGraphics.fillOval((int) particleView.x, (int) particleView.y, state.PARTICLE_MAX_SIZE, state.PARTICLE_MAX_SIZE);
-
-                        update(particleView);
+                        /*mParticleAreaGraphics.setColor(particleView.mColor);
+                        mParticleAreaGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        mParticleAreaGraphics.fillOval((int) particleView.x, (int) particleView.y, state.PARTICLE_MAX_SIZE, state.PARTICLE_MAX_SIZE);*/
+                        // modify by vencc on 2018/3/30
+                        try {
+                            Class cls = Class.forName("com.jiyuanime.shape."+state.PARTICLE_SHAPE);
+                            Method method=cls.getMethod("getGraphics",Graphics2D.class,int.class,int.class,int.class,Color.class);
+                            method.invoke(null,mParticleAreaGraphics,(int) particleView.x, (int) particleView.y, state.PARTICLE_MAX_SIZE,particleView.mColor);
+                            update(particleView);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -177,7 +181,7 @@ public class ParticlePanel implements Runnable, Border {
 
         //mParticleAreaImage = new BufferedImage(mParticleAreaWidth, mParticleAreaHeight, BufferedImage.TYPE_INT_BGR);
         // modify by vencc on 2018/3/30
-        mParticleAreaImage = UIUtil.createImage(jComponent,mParticleAreaWidth, mParticleAreaHeight, BufferedImage.TYPE_INT_BGR);
+        mParticleAreaImage = UIUtil.createImage(jComponent, mParticleAreaWidth, mParticleAreaHeight, BufferedImage.TYPE_INT_BGR);
 
         mParticleAreaGraphics = mParticleAreaImage.createGraphics();
         /** 设置 透明窗体背景 */

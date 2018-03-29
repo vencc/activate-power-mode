@@ -21,6 +21,7 @@ public class Setting implements Configurable {
     private JPanel rootPanel;
     private JCheckBox colorAutoCheckBox;
     private JTextField particleMaxSizeTextField;
+    private JComboBox particleShapeComboBox;
 
     private Config.State state = Config.getInstance().state;
 
@@ -45,6 +46,7 @@ public class Setting implements Configurable {
     public boolean isModified() {
         try {
             return !Comparing.equal(state.PARTICLE_MAX_COUNT, Integer.parseInt(particleMaxCountTextField.getText())) ||
+                    !Comparing.equal(state.PARTICLE_SHAPE,(String)particleShapeComboBox.getSelectedItem())||
                     !Comparing.equal(state.PARTICLE_MAX_SIZE, Integer.parseInt(particleMaxSizeTextField.getText())) ||
                     !Comparing.equal(state.PARTICLE_COLOR, colorAutoCheckBox.isSelected() ? null : colorChooser.getSelectedColor());
         } catch (NumberFormatException $ex) {
@@ -55,7 +57,7 @@ public class Setting implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
-
+        state.PARTICLE_SHAPE = (String) particleShapeComboBox.getSelectedItem();
         try {
             int particle_max_count = Integer.parseInt(particleMaxCountTextField.getText());
             if (particle_max_count < 0) {
@@ -92,6 +94,13 @@ public class Setting implements Configurable {
                 colorChooser.setEditable(!item.isSelected());
             }
         });
+        particleShapeComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String name=(String)e.getItem();
+                particleShapeComboBox.setSelectedItem("name");
+            }
+        });
     }
 
     private void initSetting() {
@@ -102,5 +111,9 @@ public class Setting implements Configurable {
         } else {
             colorChooser.setSelectedColor(state.PARTICLE_COLOR);
         }
+        particleShapeComboBox.addItem("RoughRoundShape");
+        particleShapeComboBox.addItem("RoundShape");
+        particleShapeComboBox.addItem("StarShape");
+        particleShapeComboBox.setSelectedItem(state.PARTICLE_SHAPE);
     }
 }
