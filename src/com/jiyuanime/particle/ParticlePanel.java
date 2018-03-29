@@ -1,6 +1,7 @@
 package com.jiyuanime.particle;
 
 import com.intellij.util.ui.JBUI;
+import com.intellij.util.ui.UIUtil;
 import com.jiyuanime.config.Config;
 
 import java.awt.AlphaComposite;
@@ -174,7 +175,10 @@ public class ParticlePanel implements Runnable, Border {
         mParticleAreaWidth = ParticlePositionCalculateUtil.getParticleAreaWidth(jComponent.getFont().getSize());
         mParticleAreaHeight = ParticlePositionCalculateUtil.getParticleAreaHeight(jComponent.getFont().getSize());
 
-        mParticleAreaImage = new BufferedImage(mParticleAreaWidth, mParticleAreaHeight, BufferedImage.TYPE_INT_BGR);
+        //mParticleAreaImage = new BufferedImage(mParticleAreaWidth, mParticleAreaHeight, BufferedImage.TYPE_INT_BGR);
+        // modify by vencc on 2018/3/30
+        mParticleAreaImage = UIUtil.createImage(jComponent,mParticleAreaWidth, mParticleAreaHeight, BufferedImage.TYPE_INT_BGR);
+
         mParticleAreaGraphics = mParticleAreaImage.createGraphics();
         /** 设置 透明窗体背景 */
         mParticleAreaImage = mParticleAreaGraphics.getDeviceConfiguration().createCompatibleImage(mParticleAreaWidth, mParticleAreaHeight, Transparency.TRANSLUCENT);
