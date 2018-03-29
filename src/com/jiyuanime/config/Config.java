@@ -14,13 +14,13 @@ import java.awt.*;
  * Created by KADO on 15/12/17.
  */
 @State(
-    name = "activate-power-mode",
-    storages = {
-            @Storage(
-                    id = "activate-power-mode",
-                    file = "$APP_CONFIG$/activate-power-mode_setting.xml"
-            )
-    }
+        name = "activate-power-mode",
+        storages = {
+                @Storage(
+                        id = "activate-power-mode",
+                        file = "$APP_CONFIG$/activate-power-mode_setting.xml"
+                )
+        }
 )
 public class Config implements PersistentStateComponent<Config.State> {
 
@@ -45,6 +45,8 @@ public class Config implements PersistentStateComponent<Config.State> {
 
     public void defaultInitState() {
 
+        state.PARTICLE_MAX_SIZE = 8;
+
         state.IS_ENABLE = true;
 
         state.IS_SPARK = true;
@@ -65,6 +67,14 @@ public class Config implements PersistentStateComponent<Config.State> {
     }
 
     public static final class State {
+
+        /**
+         * 粒子大小
+         *
+         * @author vencc
+         * @date 2018/3/29
+         */
+        public int PARTICLE_MAX_SIZE = 8;
 
         /**
          * 是否开启

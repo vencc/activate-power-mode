@@ -68,7 +68,7 @@ public class ParticlePanel implements Runnable, Border {
                     ParticleView particleView = mParticleViews.get(key);
                     if (particleView != null && particleView.isEnable()) {
                         mParticleAreaGraphics.setColor(particleView.mColor);
-                        mParticleAreaGraphics.fillOval((int) particleView.x, (int) particleView.y, ParticleView.PARTICLE_WIDTH, ParticleView.PARTICLE_WIDTH);
+                        mParticleAreaGraphics.fillOval((int) particleView.x, (int) particleView.y, state.PARTICLE_MAX_SIZE, state.PARTICLE_MAX_SIZE);
 
                         update(particleView);
                     }
